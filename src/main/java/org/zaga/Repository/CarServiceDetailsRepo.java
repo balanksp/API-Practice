@@ -2,8 +2,6 @@ package org.zaga.Repository;
 
 import org.zaga.Entity.CarServiceDetails;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -16,11 +14,10 @@ public class CarServiceDetailsRepo implements PanacheRepository<CarServiceDetail
         return details;
     }
 
-    public CarServiceDetails getdetailsbydeliveryStatus(boolean deliveryStatus){
-           PanacheQuery<CarServiceDetails> details = CarServiceDetails.find("deliveryStatus=?1", deliveryStatus);
-          CarServiceDetails cc = (CarServiceDetails) details;
-          CarServiceDetails detail = details.firstResult();
-        System.out.println("---------list of all details -------"+cc);
-        return detail;
-    }
+    // public List<CarServiceDetails> getdetailsbydeliveryStatus(boolean
+    // deliveryStatus){
+    // List<CarServiceDetails> details = CarServiceDetails.find("deliveryStatus=?1",
+    // deliveryStatus).firstResult();
+    // return details;
+    // }
 }

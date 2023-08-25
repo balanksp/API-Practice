@@ -28,31 +28,39 @@ public class CarServiceDetailsResource {
     @Path("/create-car-details")
     @POST
     public Response createsCarDetails(CarServiceDetails details) {
-        System.out.println("<----------------repo--------------<<");
-        return Response.ok(service.createCarDetails(details)).build();
+        try {
+            return Response.ok(service.createCarDetails(details)).build();
+        } catch (Exception e) {
+            return Response.status(500).build();
+        }
 
     }
 
     @Path("/view-car-details/{customerName}")
     @GET
-    public Response viewCarDetails(@QueryParam("carNumber") String carNumber,@PathParam("customerName") String customerName) {
-            
-        return Response.ok(service.viewDetails(carNumber, customerName)).build();
+    public Response viewCarDetails(@QueryParam("carNumber") String carNumber,
+            @PathParam("customerName") String customerName) {
+        try {
+            return Response.ok(service.viewDetails(carNumber, customerName)).build();
+
+        } catch (Exception e) {
+            return Response.status(500).build();
+
+        }
     }
 
     @DELETE
     @Path("/delete-car-details")
-   public Response deleteCarDetailsFromRecord(@QueryParam("carNumber") String carNumber,@QueryParam("customerName") String customerName){  
-        service.deleteServiceDetails(false);
-        
-    return Response.noContent().build();
-   }
-
-    
+    public Response deleteCarDetailsFromRecord(@QueryParam("carNumber") String carNumber,
+            @QueryParam("customerName") String customerName, @QueryParam("status") boolean deliveryStatus) {
+        service.deleteServiceDetails(deliveryStatus);
+        return Response.noContent().build();
+    }
 
     @PUT
     @Path("/update-car-details")
-    public Response updateCarDetails(@QueryParam("carNumber") String carNumber, @QueryParam("custName") String custName, @QueryParam("serviceStatus") CarEnum carEnum) {
+    public Response updateCarDetails(@QueryParam("carNumber") String carNumber, @QueryParam("custName") String custName,
+            @QueryParam("serviceStatus") CarEnum carEnum) {
         CarServiceDetails detail = service.updateCarServiceDetails(carNumber, custName, carEnum);
         return Response.ok(detail).build();
 

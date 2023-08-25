@@ -1,5 +1,5 @@
 package org.zaga.Entity;
 
 public enum CarEnum {
-    GOINGON, PENDING, DONE
+    GOING_ON, PENDING, DONE
 }

@@ -8,7 +8,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.QueryParam;
 
 @ApplicationScoped
 public class CarServiceDetailsService {
@@ -21,8 +20,8 @@ public class CarServiceDetailsService {
 
     @Transactional
     public CarServiceDetails createCarDetails(CarServiceDetails details) {
-      
-        System.out.println("-------------"+details);
+
+        System.out.println("-------------" + details);
         return entityManager.merge(details);
 
     }
@@ -34,12 +33,12 @@ public class CarServiceDetailsService {
 
     @Transactional
     public void deleteServiceDetails(boolean deliveryStatus) {
-      CarServiceDetails details = repository.getdetailsbydeliveryStatus(deliveryStatus);
-      System.out.println(details+"........>>>>>><<<<<<...........");
-                   if(details != null && details.isDeliveryStatus()){
-                    details.delete();
-                   }
-    //   return details;
+        // List<CarServiceDetails> details =
+        // CarServiceDetails.getdetailsbydeliveryStatus(deliveryStatus);
+        if (deliveryStatus == true) {
+            CarServiceDetails.delete("deliveryStatus = ?1", true);
+        }
+
     }
 
     @Transactional
@@ -47,7 +46,6 @@ public class CarServiceDetailsService {
 
         CarServiceDetails details = repository.getDetailsByNumberAndName(carNumber, customerName);
         details.setServiceStatus(carEnum);
-        // details.update(details.isDeliveryStatus());
         if (carEnum.equals(CarEnum.DONE)) {
             details.setDeliveryStatus(true);
             details.setDeliveryAvailableStatus(true);
