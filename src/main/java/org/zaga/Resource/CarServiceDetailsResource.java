@@ -35,23 +35,20 @@ public class CarServiceDetailsResource {
 
     @Path("/view-car-details/{customerName}")
     @GET
-    public Response viewCarDetails(@QueryParam("carNumber") String carNumber,
-            @PathParam("customerName") String customerName) {
+    public Response viewCarDetails(@QueryParam("carNumber") String carNumber,@PathParam("customerName") String customerName) {
+            
         return Response.ok(service.viewDetails(carNumber, customerName)).build();
     }
 
     @DELETE
     @Path("/delete-car-details")
-    public void deleteCarDetails(@QueryParam("carNumber") String carNumber,
-            @QueryParam("customerName") String customerName) {
-        try {
-            service.deleteServiceDetails(carNumber, customerName);
-        } catch (Exception e) {
+   public Response deleteCarDetailsFromRecord(@QueryParam("carNumber") String carNumber,@QueryParam("customerName") String customerName){  
+        service.deleteServiceDetails(false);
+        
+    return Response.noContent().build();
+   }
 
-            System.out.println("enter the correct details");
-        }
-
-    }
+    
 
     @PUT
     @Path("/update-car-details")

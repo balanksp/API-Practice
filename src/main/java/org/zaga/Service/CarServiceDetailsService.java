@@ -6,6 +6,7 @@ import org.zaga.Repository.CarServiceDetailsRepo;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.QueryParam;
 
@@ -15,10 +16,14 @@ public class CarServiceDetailsService {
     @Inject
     CarServiceDetailsRepo repository;
 
+    @Inject
+    EntityManager entityManager;
+
     @Transactional
     public CarServiceDetails createCarDetails(CarServiceDetails details) {
-        CarServiceDetails.persist(details);
-        return details;
+      
+        System.out.println("-------------"+details);
+        return entityManager.merge(details);
 
     }
 
@@ -28,11 +33,13 @@ public class CarServiceDetailsService {
     }
 
     @Transactional
-    public void deleteServiceDetails(String carNumber, String customerName) {
-        long details = repository.delete("carNumber=?1 and customerName=?2", carNumber, customerName);
-        System.out.println(details);
-        // repository.delete(details);
-
+    public void deleteServiceDetails(boolean deliveryStatus) {
+      CarServiceDetails details = repository.getdetailsbydeliveryStatus(deliveryStatus);
+      System.out.println(details+"........>>>>>><<<<<<...........");
+                   if(details != null && details.isDeliveryStatus()){
+                    details.delete();
+                   }
+    //   return details;
     }
 
     @Transactional
@@ -40,7 +47,7 @@ public class CarServiceDetailsService {
 
         CarServiceDetails details = repository.getDetailsByNumberAndName(carNumber, customerName);
         details.setServiceStatus(carEnum);
-        // // details.update(details.isDeliveryStatus());
+        // details.update(details.isDeliveryStatus());
         if (carEnum.equals(CarEnum.DONE)) {
             details.setDeliveryStatus(true);
             details.setDeliveryAvailableStatus(true);
