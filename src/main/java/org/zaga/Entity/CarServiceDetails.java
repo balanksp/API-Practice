@@ -1,7 +1,5 @@
 package org.zaga.Entity;
 
-import java.util.List;
-
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
@@ -21,5 +19,5 @@ public class CarServiceDetails extends PanacheEntity  {
     private CarEnum serviceStatus;
     private boolean deliveryAvailableStatus;
     private boolean deliveryStatus;
-   
+
 }

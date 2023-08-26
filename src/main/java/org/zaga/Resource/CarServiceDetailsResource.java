@@ -29,7 +29,7 @@ public class CarServiceDetailsResource {
     @POST
     public Response createsCarDetails(CarServiceDetails details) {
         try {
-            return Response.ok(service.createCarDetails(details)).build();
+            return Response.status(201).entity(service.createCarDetails(details)).build();
         } catch (Exception e) {
             return Response.status(500).build();
         }
@@ -41,28 +41,42 @@ public class CarServiceDetailsResource {
     public Response viewCarDetails(@QueryParam("carNumber") String carNumber,
             @PathParam("customerName") String customerName) {
         try {
-            return Response.ok(service.viewDetails(carNumber, customerName)).build();
+            return Response.ok(200).entity(service.viewDetails(carNumber, customerName)).entity("msg had included for testing").build();
 
         } catch (Exception e) {
-            return Response.status(500).build();
+            return Response.status(400).entity(e.getMessage()).build();
 
         }
     }
 
     @DELETE
     @Path("/delete-car-details")
-    public Response deleteCarDetailsFromRecord(@QueryParam("carNumber") String carNumber,
-            @QueryParam("customerName") String customerName, @QueryParam("status") boolean deliveryStatus) {
+    public Response deleteCarDetailsFromRecord(@QueryParam("status") boolean deliveryStatus) {
         service.deleteServiceDetails(deliveryStatus);
         return Response.noContent().build();
+        // try {
+        // return
+        // Response.status(200).entity(service.deleteServiceDetails(deliveryStatus),
+        // null).build();
+        // } catch (Exception e) {
+        // return Response.status(400).entity().build();
+        // }
+
     }
 
     @PUT
     @Path("/update-car-details")
-    public Response updateCarDetails(@QueryParam("carNumber") String carNumber, @QueryParam("custName") String custName,
+    public Response updateCarDetails(@QueryParam("carNumber") String carNumber,
+            @QueryParam("customerName") String customerName,
             @QueryParam("serviceStatus") CarEnum carEnum) {
-        CarServiceDetails detail = service.updateCarServiceDetails(carNumber, custName, carEnum);
-        return Response.ok(detail).build();
+
+        CarServiceDetails detail = service.updateCarServiceDetails(carNumber, customerName, carEnum);
+        try {
+            return Response.status(200).entity(detail).build();
+
+        } catch (Exception e) {
+            return Response.status(400).entity(e.getMessage()).build();
+        }
 
     }
 
